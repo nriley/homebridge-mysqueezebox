@@ -37,13 +37,13 @@ MySqueezeboxAccessory.prototype.login = function(callback) {
     form: {email: this.email, password: this.password}
   }, function(err, response, body) {
     if (!err) {
-      console.log(jar.getCookieString("http://mysqueezebox.com"));
+      this.log.debug(jar.getCookieString("http://mysqueezebox.com"));
       callback(null);
     } else {
-      console.log("Squeezebox error '%s'. Response: %s", err, body);
+      this.log.error("MySqueezebox error '%s'. Response: %s", err, body);
       callback(err || new Error("Failed to log into MySqueezebox."));
     }
-  });
+  }.bind(this));
 }
 
 MySqueezeboxAccessory.prototype.command = function(command, callback) {
@@ -54,17 +54,17 @@ MySqueezeboxAccessory.prototype.command = function(command, callback) {
     json: rpc
   }, function(err, response, body) {
     if (!err && response.statusCode == 200) {
-      console.log("Squeezebox JSON RPC complete: " + JSON.stringify(rpc));
+      this.log.info("MySqueezebox JSON RPC complete: " + JSON.stringify(rpc));
       callback(null);
     } else {
-      console.log("Squeezebox error '%s'. Response: %s", err, body);
+      this.log.error("MySqueezebox error '%s'. Response: %s", err, body);
       callback(err || new Error("MySqueezebox error occurred."));
     }
-  });
+  }.bind(this));
 }
 
 MySqueezeboxAccessory.prototype.setOn = function(on, callback) {
-  this.log("MySqueezebox on: " + on);
+  this.log.debug("MySqueezebox on: " + on);
   this.login(function(status) {
     if (status) {
       callback(status);
