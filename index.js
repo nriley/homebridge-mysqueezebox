@@ -19,7 +19,7 @@ function MySqueezeboxAccessory(log, config) {
   this.oncommand = config["oncommand"];
   this.offcommand = config["offcommand"] || ["power", "0"];
 
-  this.service = new Service.Switch(this.name);
+  this.service = new Service.Lightbulb(this.name);
 
   this.service
     .getCharacteristic(Characteristic.On)
