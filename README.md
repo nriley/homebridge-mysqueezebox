@@ -1,7 +1,7 @@
 # homebridge-mysqueezebox
 [Homebridge](https://github.com/nfarina/homebridge) plugin for sending commands through [MySqueezebox](http://mysqueezebox.com/).
 
-This plugin exposes your Squeezebox as a set of switches.  The way I use it, turning on a "switch" starts something playing, and by default turning off a switch will turn off the Squeezebox, though you can specify a different `offcommand` if you wish.  With Siri, it's pretty natural to say "Turn on (thing I want to listen to)", and you can easily connect the Squeezebox to HomeKit scenes, for example if you want music to wake up/go to sleep by.
+This plugin exposes your Squeezebox as a set of lightbulbs.  The way I use it, turning on a “light” starts something playing, and by default turning off a lightbulb will turn off the Squeezebox, though you can specify a different `offcommand` if you wish.  With Siri, it's relatively natural to say “Turn on (thing I want to listen to)”, and you can easily incorporate the Squeezebox in HomeKit scenes, for example if you want music to wake up/go to sleep by.  Adjust the lightbulb's brightness to control the Squeezebox’s playback volume.
 
 ## Sample usage
 ```
