@@ -1,6 +1,6 @@
 var request = require("request");
 var jar = request.jar();
-request = request.defaults({jar: jar, followRedirect: false});
+request = request.defaults({jar: jar, followRedirect: false, timeout: 1000});
 var Service, Characteristic;
 
 module.exports = function(homebridge) {
