@@ -82,6 +82,10 @@ MySqueezeboxAccessory.prototype.getOn = function(callback) {
         callback(status);
         return;
       }
+      if (result === null) {
+        callback(new Error("Could not get MySqueezebox power status."));
+        return;
+      }
       this.log.debug("On? " + (result.mode == "play"));
       callback(null, (result.mode == "play") ? 1 : 0);
     }.bind(this));
@@ -122,6 +126,10 @@ MySqueezeboxAccessory.prototype.getBrightness = function(callback) {
     this.command(["mixer", "volume", "?"], function(status, result) {
       if (status) {
         callback(status);
+        return;
+      }
+      if (result === null) {
+        callback(new Error("Could not get MySqueezebox volume."));
         return;
       }
       this.log.debug("Volume is " + result._volume);
