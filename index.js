@@ -18,6 +18,8 @@ function MySqueezeboxAccessory(log, config) {
   this.playerid = config["playerid"];
   this.oncommand = config["oncommand"];
   this.offcommand = config["offcommand"] || ["power", "0"];
+  this.serverurl = config["serverurl"] || "http://mysqueezebox.com";
+  this.mysqueezebox = !!config["serverurl"];
 
   this.service = new Service.Lightbulb(this.name);
 
@@ -33,6 +35,9 @@ function MySqueezeboxAccessory(log, config) {
 }
 
 MySqueezeboxAccessory.prototype.login = function(callback) {
+  if (!this.mysqueezebox)
+      callback(null);
+
   // XXX cookies last for a year; don't bother trying to handle expiration
   if (jar.getCookieString("http://mysqueezebox.com")) {
     callback(null);
@@ -56,21 +61,21 @@ MySqueezeboxAccessory.prototype.command = function(command, callback) {
   var rpc = {id: 1, method: "slim.request", params: [this.playerid, command]};
 
   request.post({
-    url: "http://mysqueezebox.com/jsonrpc.js",
+    url: this.serverurl + "/jsonrpc.js",
     json: rpc
   }, function(err, response, body) {
-    if (!err && response.statusCode == 200) {
-      this.log.info("MySqueezebox JSON RPC complete: " + JSON.stringify(rpc));
+    if (!err && response.statusCode == 200 && response.headers['content-type'] == 'application/json') {
+      this.log.info("Squeezebox JSON RPC complete: " + JSON.stringify(rpc));
       callback(null, body.result);
     } else {
-      this.log.error("MySqueezebox error '%s'. Response: %s", err, body);
+      this.log.error("Squeezebox error '%s'. Response: %s", err, body);
       callback(err || new Error("MySqueezebox error occurred."));
     }
   }.bind(this));
 }
 
 MySqueezeboxAccessory.prototype.getOn = function(callback) {
-  this.log.debug("MySqueezebox on?");
+  this.log.debug("Squeezebox on?");
   this.login(function(status) {
     if (status) {
       callback(status);
@@ -83,7 +88,7 @@ MySqueezeboxAccessory.prototype.getOn = function(callback) {
         return;
       }
       if (result === null) {
-        callback(new Error("Could not get MySqueezebox power status."));
+        callback(new Error("Could not get Squeezebox power status."));
         return;
       }
       this.log.debug("On? " + (result.mode == "play"));
@@ -93,7 +98,7 @@ MySqueezeboxAccessory.prototype.getOn = function(callback) {
 }
 
 MySqueezeboxAccessory.prototype.setOn = function(on, callback) {
-  this.log.debug("MySqueezebox on: " + on);
+  this.log.debug("Squeezebox on: " + on);
   this.login(function(status) {
     if (status) {
       callback(status);
@@ -116,7 +121,7 @@ MySqueezeboxAccessory.prototype.setOn = function(on, callback) {
 }
 
 MySqueezeboxAccessory.prototype.getBrightness = function(callback) {
-  this.log.debug("MySqueezebox volume?");
+  this.log.debug("Squeezebox volume?");
   this.login(function(status) {
     if (status) {
       callback(status);
@@ -129,7 +134,7 @@ MySqueezeboxAccessory.prototype.getBrightness = function(callback) {
         return;
       }
       if (result === null) {
-        callback(new Error("Could not get MySqueezebox volume."));
+        callback(new Error("Could not get Squeezebox volume."));
         return;
       }
       this.log.debug("Volume is " + result._volume);
@@ -139,7 +144,7 @@ MySqueezeboxAccessory.prototype.getBrightness = function(callback) {
 }
 
 MySqueezeboxAccessory.prototype.setBrightness = function(value, callback) {
-  this.log.debug("MySqueezebox volume: " + value);
+  this.log.debug("Squeezebox volume: " + value);
   this.login(function(status) {
     if (status) {
       callback(status);
