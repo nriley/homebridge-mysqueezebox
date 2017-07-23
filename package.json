@@ -14,10 +14,10 @@
     "url": "http://github.com/nriley/homebridge-mysqueezebox/issues"
   },
   "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.4.9"
+    "node": ">=6.11.1",
+    "homebridge": ">=0.4.22"
   },
   "dependencies": {
-    "request": ">=2.79.0"
+    "request": ">=2.81.0"
   }
 }
