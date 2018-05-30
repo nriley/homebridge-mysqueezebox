@@ -19,7 +19,7 @@ function MySqueezeboxAccessory(log, config) {
   this.oncommand = config["oncommand"];
   this.offcommand = config["offcommand"] || ["power", "0"];
   this.serverurl = config["serverurl"] || "http://mysqueezebox.com";
-  this.mysqueezebox = !!config["serverurl"];
+  this.mysqueezebox = config["serverurl"] === undefined;
 
   this.service = new Service.Lightbulb(this.name);
 
@@ -35,8 +35,10 @@ function MySqueezeboxAccessory(log, config) {
 }
 
 MySqueezeboxAccessory.prototype.login = function(callback) {
-  if (!this.mysqueezebox)
+  if (!this.mysqueezebox) {
       callback(null);
+      return;
+  }
 
   // XXX cookies last for a year; don't bother trying to handle expiration
   if (jar.getCookieString("http://mysqueezebox.com")) {
