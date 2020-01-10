@@ -5,6 +5,8 @@ This plugin exposes a Squeezebox as one or more HomeKit accessories which look l
 
 As of version 0.0.3, you can either control your player via MySqueezebox (specify an `email` and `password`) or a local Logitech Media Server (specify a `serverurl`, embedding your username and password if you have one).  `playerid` is the MAC address of your Squeezebox, which you can find in the Player &gt; General section of MySqueezebox, or Settings &gt; Information on Logitech Media Server.
 
+**Note that I no longer have a functional Squeezebox so I no longer use or maintain this software.**
+
 ## Sample usage
 
 Here are some anonymized snippets from my Homebridge `config.json`:
